@@ -20,6 +20,10 @@ h3 {
   margin-bottom: 20px;
 }
 
+h4 {
+  margin-bottom: 15px;
+}
+
 dialog {
   border: none;
   margin: auto;
@@ -51,6 +55,10 @@ input {
   border-radius: 25px;
   padding: 30px;
   border-left: 25px solid red;
+}
+
+.book button {
+  margin-right: 30px;
 }
 
 .read {

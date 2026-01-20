@@ -1,4 +1,4 @@
-const myLibrary = [];
+let myLibrary = [];
 
 function Book(id, title, author, numPages, read) {
     if (!new.target) {
@@ -10,6 +10,9 @@ function Book(id, title, author, numPages, read) {
     this.author = author;
     this.numPages = numPages;
     this.read = read;
+    this.toggleRead = function() {
+        this.read = !this.read;
+    }
 }
 
 function addBookToLibrary(title, author, numPages, read) {
@@ -26,6 +29,7 @@ function addBookToLibrary(title, author, numPages, read) {
 
 function displayLibrary() {
     const container = document.querySelector(".container");
+    container.innerHTML = "";
 
     myLibrary.forEach((book) => {
         const bookDiv = document.createElement("div");
@@ -44,20 +48,71 @@ function displayLibrary() {
         const pages = document.createElement("h4");
         pages.innerHTML = `${book.numPages} pages`;
 
+        const toggleRead = document.createElement("button");
+        toggleRead.dataset.id = book.id;
+        toggleRead.innerHTML = "Toggle Read Status";
+
+        toggleRead.addEventListener("click", (e) => {
+            let toggleBook = myLibrary.find(b => {
+                return b.id === e.target.dataset.id;
+            });
+
+            toggleBook.toggleRead();
+            displayLibrary();
+        })
+
+        const removeButton = document.createElement("button");
+        removeButton.dataset.id = book.id;
+        removeButton.innerHTML = "Remove Book";
+
+        removeButton.addEventListener("click", (e) => {
+            myLibrary = myLibrary.filter((b) => {
+                return b.id !== e.target.dataset.id;
+            });
+
+            displayLibrary();
+        });
+
         bookDiv.appendChild(title);
         bookDiv.appendChild(author);
         bookDiv.appendChild(pages);
+        bookDiv.appendChild(toggleRead);
+        bookDiv.appendChild(removeButton);
         container.appendChild(bookDiv);
     });
 }
 
 const dialog = document.querySelector("dialog");
 const newBookButton = document.querySelector(".new-book");
+const addButton = document.querySelector("#add");
 const cancelButton = document.querySelector("#cancel");
+
+const titleInput = document.querySelector("#title");
+const authorInput = document.querySelector("#author");
+const pagesInput = document.querySelector("#pages");
+const readInput = document.querySelector("#read");
 
 newBookButton.addEventListener("click", () => {
     dialog.showModal();
 });
+
+addButton.addEventListener("click", (e) => {
+    e.preventDefault();
+
+    console.log(titleInput);
+    
+    addBookToLibrary(
+        titleInput.value,
+        authorInput.value,
+        pagesInput.value,
+        readInput.checked
+    );
+
+
+    displayLibrary();
+
+    dialog.close();
+})
 
 cancelButton.addEventListener("click", () => {
     dialog.close();
