@@ -1,19 +1,23 @@
 let myLibrary = [];
 
-function Book(id, title, author, numPages, read) {
-    if (!new.target) {
-        throw Error("Must use 'new' keyword to call constructor!");
-    }
+class Book {
+    constructor(id, title, author, numPages, read) {
+        if (!new.target) {
+            throw Error("Must use 'new' keyword to call constructor!");
+        }
 
-    this.id = id;
-    this.title = title;
-    this.author = author;
-    this.numPages = numPages;
-    this.read = read;
-    this.toggleRead = function() {
+        this.id = id;
+        this.title = title;
+        this.author = author;
+        this.numPages = numPages;
+        this.read = read;
+    }
+    
+    toggleRead() {
         this.read = !this.read;
     }
 }
+
 
 function addBookToLibrary(title, author, numPages, read) {
     const book = new Book(
